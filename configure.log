@@ -1,0 +1,179 @@
+-- CPM: Adding package userver@ (develop)
+-- Building utest with gtest and ubench with gbench
+-- rseq-based acceleration is enabled by default
+-- Modules type search priority order: .so;.a (Default ordered)
+-- C compiler: /usr/bin/cc
+-- C++ compiler: /usr/bin/c++
+-- C++ standard 20
+-- Using the default system linker, probably GNU ld
+-- LTO: disabled (user request)
+-- Using linker debug info compression: zstd
+-- Checking -gz=zstd - found
+-- Using compiler debug info compression: zstd
+-- Linker global flags:  -Wl,--gc-sections
+-- ccache: enabled, but not found
+-- Debug build: CMAKE_BUILD_TYPE == 'Debug'
+-- Failed to retrieve git short hash
+-- Python: python3
+-- Could NOT find boost_stacktrace_windbg (missing: boost_stacktrace_windbg_DIR)
+-- Could NOT find boost_coroutine2 (missing: boost_coroutine2_DIR)
+-- Could NOT find boost_config (missing: boost_config_DIR)
+-- Could NOT find boost_assert (missing: boost_assert_DIR)
+-- CPM: userver: Adding package googletest@1.14.0 (v1.14.0)
+-- boost: 1.83.0
+-- yaml-cpp include directories: /usr/include
+-- yaml-cpp libraries: /usr/lib/x86_64-linux-gnu/libyaml-cpp.so
+-- zstd include directories: /usr/include
+-- zstd libraries: /usr/lib/x86_64-linux-gnu/libzstd.so
+-- cryptopp include directories: /usr/include
+-- cryptopp libraries: /usr/lib/x86_64-linux-gnu/libcryptopp.so
+-- fmt include directories: /usr/include
+-- fmt libraries: /usr/lib/x86_64-linux-gnu/libfmt.so
+-- dpkg-query: no packages found matching libcctz-dev
+
+-- CPM: userver: Adding package cctz@2.3 (v2.3)
+CMake Deprecation Warning at build-debug/_deps/cctz-src/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.5 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- The following OPTIONAL packages have been found:
+
+ * OpenSSL
+ * boost_program_options (required version == 1.83.0)
+ * boost_filesystem (required version == 1.83.0)
+ * boost_regex (required version == 1.83.0)
+ * boost_chrono (required version == 1.83.0)
+ * boost_atomic (required version == 1.83.0)
+ * boost_thread (required version == 1.83.0)
+ * boost_locale (required version == 1.83.0)
+ * boost_iostreams (required version == 1.83.0)
+ * boost_context (required version == 1.83.0)
+ * boost_coroutine (required version == 1.83.0)
+ * boost_stacktrace_basic (required version == 1.83.0)
+ * boost_headers (required version == 1.83.0)
+ * boost_stacktrace_backtrace (required version == 1.83.0)
+ * Boost
+ * Python3
+
+-- The following REQUIRED packages have been found:
+
+ * Threads
+ * yaml-cpp
+ * zstd
+
+-- The following OPTIONAL packages have not been found:
+
+ * boost_stacktrace_windbg (required version == 1.83.0)
+ * boost_coroutine2 (required version == 1.83.0)
+ * boost_config (required version == 1.83.0)
+ * boost_assert (required version == 1.83.0)
+
+-- DWCAS: Using boost::atomic
+-- DWCAS works
+-- Checking -ftemplate-backtrace-limit=0 - found
+-- Checking -Wdisabled-optimization - found
+-- Checking -Winvalid-pch - found
+-- Checking -Wimplicit-fallthrough - found
+-- Checking -Wlogical-op - found
+-- Checking -Wformat=2 - found
+-- Checking -Wno-error=deprecated-declarations - found
+-- Checking -Wno-useless-cast - found
+-- Checking -Wno-psabi - found
+-- Checking -fmacro-prefix-map=a=b - found
+-- Failed to retrieve git short hash
+-- Putting userver into namespace 'userver': namespace userver { inline namespace v3_1_rc {  } }
+-- jemalloc include directories: /usr/include
+-- jemalloc libraries: /usr/lib/x86_64-linux-gnu/libjemalloc.so
+-- re2 include directories: /usr/include
+-- re2 libraries: /usr/lib/x86_64-linux-gnu/libre2.so
+-- Generating formats/json gdb printing header
+-- dpkg-query: no packages found matching libbenchmark-dev
+
+-- Checking for module 'benchmark'
+--   Package 'benchmark', required by 'virtual:world', not found
+ERRORFailed to find benchmark via pkg-config
+-- CPM: userver: Adding package benchmark@1.9.5 (v1.9.5)
+-- Failed to find LLVM FileCheck
+-- Google Benchmark version: v1.9.5, normalized to 1.9.5
+-- Checking -Wno-format-nonliteral - found
+-- Found chaotic-gen: /home/redmi/projects/anxiety-backend/build-debug/_deps/userver-src/chaotic/bin/chaotic-gen
+-- Found chaotic-gen-dynamic-configs: /home/redmi/projects/anxiety-backend/build-debug/_deps/userver-src/chaotic/bin-dynamic-configs/chaotic-gen-dynamic-configs
+-- Found chaotic-openapi-gen: /home/redmi/projects/anxiety-backend/build-debug/_deps/userver-src/chaotic-openapi/bin/chaotic-openapi-gen
+-- Found clang-format: /usr/bin/clang-format
+-- Setting up the venv at /home/redmi/projects/anxiety-backend/build-debug/venv-userver-chaotic
+-- Failed to retrieve git short hash
+-- Userver version 3.1-rc
+-- libev include directories: /usr/include
+-- libev libraries: /usr/lib/x86_64-linux-gnu/libev.so
+-- libnghttp2 include directories: /usr/include
+-- libnghttp2 libraries: /usr/lib/x86_64-linux-gnu/libnghttp2.so
+-- c-ares include directories: /usr/include
+-- c-ares libraries: /usr/lib/x86_64-linux-gnu/libcares_static.a
+-- Found CURL: /usr/lib/x86_64-linux-gnu/libcurl.so (found suitable version "8.5.0", minimum required is "7.68")  
+-- Generating cmd/utask gdb printing header
+-- Context impl: fcontext
+-- Found ldap: /usr/lib/x86_64-linux-gnu/libldap.so
+-- PostgreSQLInternal include directories: /usr/include/postgresql/16/server;/usr/include/postgresql/internal;/usr/include/postgresql
+-- PostgreSQLInternal libraries: /usr/lib/x86_64-linux-gnu/libpq.a;/usr/lib/postgresql/16/lib/libpgcommon.a;/usr/lib/postgresql/16/lib/libpgcommon_shlib.a;/usr/lib/postgresql/16/lib/libpgport.a
+-- Found CURL: /usr/lib/x86_64-linux-gnu/libcurl.so (found version "8.5.0")  
+-- GssApi include directories: /usr/include/gssapi
+-- GssApi libraries: /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so
+-- Setting up the venv at /home/redmi/projects/anxiety-backend/build-debug/venv-userver-sql
+-- userver features enabled:
+--  * USERVER_FEATURE_CHAOTIC
+--  * USERVER_FEATURE_CORE
+--  * USERVER_FEATURE_CRYPTOPP_BASE64_URL
+--  * USERVER_FEATURE_CRYPTOPP_BLAKE2
+--  * USERVER_FEATURE_DWCAS
+--  * USERVER_FEATURE_JEMALLOC
+--  * USERVER_FEATURE_PATCH_LIBPQ
+--  * USERVER_FEATURE_POSTGRESQL
+--  * USERVER_FEATURE_STACKTRACE
+--  * USERVER_FEATURE_STACK_USAGE_MONITOR
+--  * USERVER_FEATURE_UBOOST_CORO
+--  * USERVER_FEATURE_UTEST
+-- userver features disabled:
+--  * USERVER_FEATURE_CHAOTIC_EXPERIMENTAL
+--  * USERVER_FEATURE_CLICKHOUSE
+--  * USERVER_FEATURE_EASY
+--  * USERVER_FEATURE_ERASE_LOG_WITH_LEVEL
+--  * USERVER_FEATURE_GRPC
+--  * USERVER_FEATURE_GRPC_PROTOVALIDATE
+--  * USERVER_FEATURE_GRPC_REFLECTION
+--  * USERVER_FEATURE_KAFKA
+--  * USERVER_FEATURE_MONGODB
+--  * USERVER_FEATURE_MULTI_INDEX_LRU
+--  * USERVER_FEATURE_MYSQL
+--  * USERVER_FEATURE_ODBC
+--  * USERVER_FEATURE_OTLP
+--  * USERVER_FEATURE_RABBITMQ
+--  * USERVER_FEATURE_REDIS
+--  * USERVER_FEATURE_ROCKS
+--  * USERVER_FEATURE_S3API
+--  * USERVER_FEATURE_SQLITE
+--  * USERVER_FEATURE_TESTSUITE
+--  * USERVER_FEATURE_YDB
+-- Dependencies from CPM:
+-- - userver
+-- - googletest
+-- - cctz
+-- - benchmark
+-- C compiler: /usr/bin/cc
+-- C++ compiler: /usr/bin/c++
+-- C++ standard 20
+-- Using the default system linker, probably GNU ld
+-- LTO: disabled (user request)
+-- Using linker debug info compression: zstd
+-- Checking -gz=zstd - found
+-- Using compiler debug info compression: zstd
+-- Linker global flags:  -Wl,--gc-sections
+-- ccache: enabled, but not found
+-- Debug build: CMAKE_BUILD_TYPE == 'Debug'
+-- Testsuite test testsuite-anxiety_backend is disabled
+-- Configuring done (30.7s)
+-- Generating done (0.4s)
+-- Build files have been written to: /home/redmi/projects/anxiety-backend/build-debug
