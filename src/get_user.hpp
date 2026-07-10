@@ -1,5 +1,7 @@
 #pragma once
 
+#include <models/user.hpp>
+
 #include <userver/components/component.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
 
@@ -9,7 +11,7 @@ namespace anxiety_backend {
 
 class GetUsers : public userver::server::handlers::HttpHandlerBase {
     public:
-        static constexpr std::string_view kName = "handler-pg-get-users";
+        static constexpr std::string_view kName = "handler-pg-get-user";
 
         GetUsers(const userver::components::ComponentConfig&, const userver::components::ComponentContext&);
 
@@ -17,14 +19,8 @@ class GetUsers : public userver::server::handlers::HttpHandlerBase {
             const override;
             
     private:
-        userver::storages::postgres::ClusterPtr pg_cluster_;
 
-        struct UserInfo{
-            std::string id;
-            std::string email;
-            std::string name;
-            std::string created_at;
-        };
+        userver::storages::postgres::ClusterPtr pg_cluster_;
 
 };
 

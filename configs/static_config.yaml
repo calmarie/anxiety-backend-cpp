@@ -73,9 +73,13 @@ components_manager:
             method: GET
             task_processor: main-task-processor  # Run it on CPU bound task processor
         
-        handler-pg-get-users:
-            path: /users
+        handler-pg-get-user:
+            path: /users/{email}
             method: GET
+            task_processor: main-task-processor
+        handler-pg-set-user:
+            path: /set-user
+            method: POST
             task_processor: main-task-processor
 
         postgres-db-1:

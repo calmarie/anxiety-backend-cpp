@@ -27,7 +27,8 @@ add_library(
     src/hello.cpp #
     src/hello_postgres.cpp
     src/bd_ping.cpp
-    src/get_users.cpp
+    src/get_user.cpp
+    src/set_user.cpp
 )
 target_link_libraries(
     ${PROJECT_NAME}_objs

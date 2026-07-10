@@ -17,7 +17,8 @@
 #include <hello.hpp>
 #include <hello_postgres.hpp> 
 #include <bd_ping.hpp>
-#include <get_users.hpp>
+#include <get_user.hpp>
+#include <set_user.hpp>
 int main(int argc, char* argv[]) {
     auto component_list =
         userver::components::MinimalServerComponentList()
@@ -32,6 +33,7 @@ int main(int argc, char* argv[]) {
             .Append<anxiety_backend::HelloPostgres>()
             .Append<anxiety_backend::PostgresPing>()
             .Append<anxiety_backend::GetUsers>()
+            .Append<anxiety_backend::SetUser>()
         ;
 
     return userver::utils::DaemonMain(argc, argv, component_list);
