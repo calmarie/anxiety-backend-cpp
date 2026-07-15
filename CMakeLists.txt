@@ -26,15 +26,25 @@ add_library(
     src/greeting.cpp #
     src/hello.cpp #
     src/hello_postgres.cpp
-    src/bd_ping.cpp
-    src/get_user.cpp
-    src/set_user.cpp
+    src/handlers/bd_ping.cpp
+    src/handlers/get_user.cpp
+    src/handlers/create_user.cpp
+    src/handlers/delete_user.cpp
+    src/repositories/user_repository.cpp
+    src/handlers/update_user_name.cpp
+
 )
 target_link_libraries(
     ${PROJECT_NAME}_objs
     PUBLIC userver-core
            userver-postgresql
            userver-universal
+)
+
+target_include_directories(
+    ${PROJECT_NAME}_objs
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 

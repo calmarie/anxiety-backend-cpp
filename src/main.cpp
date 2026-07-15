@@ -16,9 +16,12 @@
 
 #include <hello.hpp>
 #include <hello_postgres.hpp> 
-#include <bd_ping.hpp>
-#include <get_user.hpp>
-#include <set_user.hpp>
+#include <handlers/bd_ping.hpp>
+#include <handlers/get_user.hpp>
+#include <handlers/create_user.hpp>
+#include <handlers/delete_user.hpp>
+#include <handlers/update_user_name.hpp>
+
 int main(int argc, char* argv[]) {
     auto component_list =
         userver::components::MinimalServerComponentList()
@@ -32,8 +35,10 @@ int main(int argc, char* argv[]) {
             .Append<userver::components::Postgres>("postgres-db-1")
             .Append<anxiety_backend::HelloPostgres>()
             .Append<anxiety_backend::PostgresPing>()
-            .Append<anxiety_backend::GetUsers>()
-            .Append<anxiety_backend::SetUser>()
+            .Append<anxiety_backend::GetUser>()
+            .Append<anxiety_backend::CreateUser>()
+            .Append<anxiety_backend::DeleteUser>()
+            .Append<anxiety_backend::UpdateUserName>()
         ;
 
     return userver::utils::DaemonMain(argc, argv, component_list);

@@ -1,10 +1,11 @@
 #include "get_user.hpp"
-#include <greeting.hpp>
+#include "repositories/user_repository.hpp"
+
 #include <userver/storages/postgres/component.hpp>
 
 namespace anxiety_backend {
 
-GetUsers::GetUsers     
+GetUser::GetUser   
 (   
     const userver::components::ComponentConfig& config,
     const userver::components::ComponentContext& component_context
@@ -13,7 +14,7 @@ GetUsers::GetUsers
       pg_cluster_(component_context.FindComponent<userver::components::Postgres>("postgres-db-1").GetCluster())
 {}
 
-std::string GetUsers::HandleRequestThrow(
+std::string GetUser::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
     userver::server::request::RequestContext&  
 )  const {
@@ -22,31 +23,26 @@ std::string GetUsers::HandleRequestThrow(
     auto& responseCode = request.GetHttpResponse();
     if (email.empty()){
         responseCode.SetStatus(userver::server::http::HttpStatus::kBadRequest);
-        return "id is required";
+        return "email is required";
     }
-    const auto res = pg_cluster_->Execute(
-    userver::storages::postgres::ClusterHostType::kMaster,
-    "SELECT id::text,email,name,created_at::text FROM users"
-    " WHERE email = $1",
-    email
-    );
-    if (res.IsEmpty()){
+    UserRepository repo(pg_cluster_);
+    auto userInfo = repo.GetInfo(email);
+    if (!userInfo){
         LOG_INFO() << "USER NOT FOUND";
 
         responseCode.SetStatus(userver::server::http::HttpStatus::NotFound);
-        return "Incorrect id";
+        return "Incorrect email";
         }
     
     // std::vector<UserInfo> users;
     userver::formats::json::ValueBuilder response;
     response.Resize(0);
     userver::formats::json::ValueBuilder user;
-    const auto &row = res[0];
-    
-    user["id"] = row["id"].As<std::string>();
-    user["email"] = row["email"].As<std::string>();
-    user["name"] = row["name"].As<std::string>();
-    user["created_at"] = row["created_at"].As<std::string>();
+
+    user["id"] = userInfo->id;
+    user["email"] = userInfo->email;
+    user["name"] = userInfo->name;
+    user["created_at"] = userInfo->created_at;
 
     response.PushBack(user.ExtractValue());
         

@@ -74,13 +74,25 @@ components_manager:
             task_processor: main-task-processor  # Run it on CPU bound task processor
         
         handler-pg-get-user:
-            path: /users/{email}
+            path: /user/{email}
             method: GET
             task_processor: main-task-processor
-        handler-pg-set-user:
-            path: /set-user
+        
+        handler-pg-delete-user:
+            path: /user/{email}
+            method: DELETE
+            task_processor: main-task-processor
+
+        handler-pg-create-user:
+            path: /user
             method: POST
             task_processor: main-task-processor
+        
+        handler-pg-update-user-name:
+            path: /user/name
+            method: PATCH
+            task_processor: main-task-processor
+        
 
         postgres-db-1:
             dbconnection: $pg-connection
