@@ -32,6 +32,7 @@ add_library(
     src/handlers/delete_user.cpp
     src/repositories/user_repository.cpp
     src/handlers/update_user_name.cpp
+    src/service/user_service.cpp
 
 )
 target_link_libraries(

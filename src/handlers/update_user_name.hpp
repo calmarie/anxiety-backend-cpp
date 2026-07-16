@@ -5,6 +5,8 @@
 
 #include <userver/storages/postgres/cluster.hpp>
 
+#include "service/user_service.hpp"
+
 namespace anxiety_backend {
 
 class UpdateUserName : public userver::server::handlers::HttpHandlerBase {
@@ -17,7 +19,7 @@ class UpdateUserName : public userver::server::handlers::HttpHandlerBase {
             const override;
             
     private:
-        userver::storages::postgres::ClusterPtr pg_cluster_;        
+        UserService user_service_;
 };
 
 }

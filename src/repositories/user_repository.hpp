@@ -8,12 +8,12 @@ namespace anxiety_backend {
     class UserRepository{
     public:
 
-        explicit UserRepository(userver::storages::postgres::ClusterPtr cluster);
+        explicit UserRepository(const userver::storages::postgres::ClusterPtr& cluster);
 
         void Create (const UserInfo &user) const;
-        std::optional<UserInfo> GetInfo (const std::string &email) const;
-        bool Delete (const std::string &email) const;
-        bool UpdateName (const std::string &email, const std::string &name) const;
+        std::optional<UserInfo> GetInfo (std::string_view email) const;
+        bool Delete (std::string_view email) const;
+        bool UpdateName (std::string_view email, std::string_view name) const;
 
 
     private:

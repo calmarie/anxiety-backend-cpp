@@ -1,5 +1,7 @@
 #pragma once
 
+#include "service/user_service.hpp"
+
 #include <userver/components/component.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
 
@@ -17,8 +19,8 @@ class DeleteUser : public userver::server::handlers::HttpHandlerBase {
             const override;
            
     private:
-
-        userver::storages::postgres::ClusterPtr pg_cluster_;
+        
+        UserService user_service_;
 
 };
 

@@ -1,51 +1,49 @@
 #include "get_user.hpp"
-#include "repositories/user_repository.hpp"
-
 #include <userver/storages/postgres/component.hpp>
+#include <stdexcept>
 
 namespace anxiety_backend {
 
-GetUser::GetUser   
+GetUserHandler::GetUserHandler   
 (   
     const userver::components::ComponentConfig& config,
     const userver::components::ComponentContext& component_context
 )
     : HttpHandlerBase(config, component_context),
-      pg_cluster_(component_context.FindComponent<userver::components::Postgres>("postgres-db-1").GetCluster())
+      user_service_(component_context.FindComponent<userver::components::Postgres>("postgres-db-1").GetCluster())
 {}
 
-std::string GetUser::HandleRequestThrow(
+std::string GetUserHandler::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
     userver::server::request::RequestContext&  
 )  const {
+
     
+
     const auto email = request.GetPathArg("email");
-    auto& responseCode = request.GetHttpResponse();
-    if (email.empty()){
-        responseCode.SetStatus(userver::server::http::HttpStatus::kBadRequest);
-        return "email is required";
-    }
-    UserRepository repo(pg_cluster_);
-    auto userInfo = repo.GetInfo(email);
-    if (!userInfo){
-        LOG_INFO() << "USER NOT FOUND";
+    auto& response_сode = request.GetHttpResponse();
 
-        responseCode.SetStatus(userver::server::http::HttpStatus::NotFound);
-        return "Incorrect email";
-        }
-    
-    // std::vector<UserInfo> users;
     userver::formats::json::ValueBuilder response;
-    response.Resize(0);
-    userver::formats::json::ValueBuilder user;
+    try
+    {
+    auto user_info = user_service_.GetUser(email);
 
-    user["id"] = userInfo->id;
-    user["email"] = userInfo->email;
-    user["name"] = userInfo->name;
-    user["created_at"] = userInfo->created_at;
+    response["id"] = user_info.id;
+    response["email"] = user_info.email;
+    response["name"] = user_info.name;
+    response["created_at"] = user_info.created_at;
+    }
+    catch (std::runtime_error& err)
+    {
+        response["error"] = err.what();
+        response_сode.SetStatus(userver::server::http::HttpStatus::kNotFound);
+    }
+    catch (std::invalid_argument& err)
+    {
+        response["error"] = err.what();
+        response_сode.SetStatus(userver::server::http::HttpStatus::kBadRequest);
+    }
 
-    response.PushBack(user.ExtractValue());
-        
     return userver::formats::json::ToString(response.ExtractValue());
 
 }

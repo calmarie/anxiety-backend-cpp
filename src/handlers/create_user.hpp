@@ -1,6 +1,7 @@
 #pragma once
 
 #include "models/user.hpp"
+#include "service/user_service.hpp"
 
 #include <userver/components/component.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
@@ -19,8 +20,7 @@ class CreateUser : public userver::server::handlers::HttpHandlerBase {
             const override;
             
     private:
-        userver::storages::postgres::ClusterPtr pg_cluster_;
-
+        UserService user_service_;
         static UserInfo createUser (std::string json);
         
 };

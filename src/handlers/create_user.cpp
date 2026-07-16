@@ -1,5 +1,4 @@
 #include "create_user.hpp"
-#include "repositories/user_repository.hpp"
 
 #include <userver/storages/postgres/component.hpp>
 
@@ -11,7 +10,7 @@ CreateUser::CreateUser
     const userver::components::ComponentContext& component_context
 )
     : HttpHandlerBase(config, component_context),
-      pg_cluster_(component_context.FindComponent<userver::components::Postgres>("postgres-db-1").GetCluster())
+      user_service_(component_context.FindComponent<userver::components::Postgres>("postgres-db-1").GetCluster())
 {}
 
 std::string CreateUser::HandleRequestThrow(
@@ -22,20 +21,24 @@ std::string CreateUser::HandleRequestThrow(
     std::string body = request.RequestBody();
     UserInfo user = createUser(body);
 
-    UserRepository repo(pg_cluster_);
+    auto& response_code = request.GetHttpResponse();
+    
+    userver::formats::json::ValueBuilder response;
     try {
-        repo.Create(user);
-    }
-    catch (const userver::storages::postgres::UniqueViolation&) {
+        auto user_info = user_service_.CreateUser(user);
 
-        request.GetHttpResponse().SetStatus(
-            userver::server::http::HttpStatus::kConflict
-        );
-
-        return R"({"error":"email already exists"})";
+        response["id"] = user_info.id;
+        response["email"] = user_info.email;
+        response["name"] = user_info.name;
+        response["created_at"] = user_info.created_at;
     }
-    auto info = repo.GetInfo(user.email);;
-    return info->id;
+    catch (std::runtime_error& err)
+    {
+        response["error"] = err.what();
+        response_code.SetStatus(userver::server::http::HttpStatus::kConflict);
+    }
+
+    return userver::formats::json::ToString(response.ExtractValue());
 
 }
 

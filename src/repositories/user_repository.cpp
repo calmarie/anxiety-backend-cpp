@@ -3,7 +3,7 @@
 
 namespace anxiety_backend {
 
-    UserRepository::UserRepository(userver::storages::postgres::ClusterPtr cluster)
+    UserRepository::UserRepository(const userver::storages::postgres::ClusterPtr& cluster)
     : pg_cluster_(std::move(cluster)){} 
 
     void UserRepository::Create(const UserInfo &user) const{
@@ -18,7 +18,7 @@ namespace anxiety_backend {
     }
 
 
-    std::optional<UserInfo> UserRepository::GetInfo (const std::string &email) const{
+    std::optional<UserInfo> UserRepository::GetInfo (std::string_view email) const{
         const auto res = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
             "SELECT id::text,email,name,created_at::text FROM users"
@@ -39,7 +39,7 @@ namespace anxiety_backend {
 
     }
 
-    bool UserRepository::Delete (const std::string &email) const{
+    bool UserRepository::Delete (std::string_view email) const{
         const auto res = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
             "DELETE FROM users"
@@ -49,7 +49,7 @@ namespace anxiety_backend {
         return res.RowsAffected() > 0;
     }
 
-    bool UserRepository::UpdateName (const std::string &email, const std::string &name) const {
+    bool UserRepository::UpdateName (std::string_view email, std::string_view name) const {
 
         const auto res = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,

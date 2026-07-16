@@ -1,5 +1,4 @@
 #include "update_user_name.hpp"
-#include "repositories/user_repository.hpp"
 
 #include <userver/storages/postgres/component.hpp>
 
@@ -11,7 +10,7 @@ UpdateUserName::UpdateUserName
     const userver::components::ComponentContext& component_context
 )
     : HttpHandlerBase(config, component_context),
-      pg_cluster_(component_context.FindComponent<userver::components::Postgres>("postgres-db-1").GetCluster())
+      user_service_(component_context.FindComponent<userver::components::Postgres>("postgres-db-1").GetCluster())
 {}
 
 std::string UpdateUserName::HandleRequestThrow(
@@ -23,22 +22,31 @@ std::string UpdateUserName::HandleRequestThrow(
     auto email = json["email"].As<std::string>();
     auto name = json["name"].As<std::string>();
 
-    auto &responseCode = request.GetHttpResponse();
+    auto& response_сode = request.GetHttpResponse();
 
-     if (email.empty()){
-        responseCode.SetStatus(userver::server::http::HttpStatus::kBadRequest);
-        return "email is required";
+    userver::formats::json::ValueBuilder response;
+
+    try
+    {
+    auto user_info = user_service_.UpdateUserName(email, name);
+
+    response["id"] = user_info.id;
+    response["email"] = user_info.email;
+    response["name"] = user_info.name;
+    response["created_at"] = user_info.created_at;
+    }
+    catch (std::runtime_error& err)
+    {
+        response["error"] = err.what();
+        response_сode.SetStatus(userver::server::http::HttpStatus::kNotFound);
+    }
+    catch (std::invalid_argument& err)
+    {
+        response["error"] = err.what();
+        response_сode.SetStatus(userver::server::http::HttpStatus::kBadRequest);
     }
 
-    UserRepository repo (pg_cluster_);
-    auto flag = repo.UpdateName(email, name);
-
-    if (!flag) {
-        responseCode.SetStatus(userver::server::http::HttpStatus::NotFound);
-        return R"({"error":"incorrect email"})";
-    }
-    auto info = repo.GetInfo(email);
-    return info->id;
+    return userver::formats::json::ToString(response.ExtractValue());
 
 }
 }
