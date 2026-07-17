@@ -10,9 +10,14 @@
 
 namespace anxiety_backend {
 
-class UserService {
+class UserService final : public userver::components::ComponentBase{
 public:
-    explicit UserService (const userver::storages::postgres::ClusterPtr& cluster);
+    static constexpr std::string_view kName = "user-service";
+
+    UserService (
+        const userver::components::ComponentConfig& config,
+        const userver::components::ComponentContext& context
+    );
 
     UserInfo GetUser (std::string_view email) const;
     void DeleteUser (std::string_view email) const;

@@ -1,5 +1,4 @@
 #include "delete_user.hpp"
-#include "repositories/user_repository.hpp"
 
 #include <userver/storages/postgres/component.hpp>
 
@@ -11,7 +10,7 @@ DeleteUser::DeleteUser
     const userver::components::ComponentContext& component_context
 )
     : HttpHandlerBase(config, component_context),
-      user_service_(component_context.FindComponent<userver::components::Postgres>("postgres-db-1").GetCluster())
+      user_service_(component_context.FindComponent<UserService>())
 {}
 
 std::string DeleteUser::HandleRequestThrow(

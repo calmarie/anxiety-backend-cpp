@@ -1,6 +1,5 @@
 #pragma once
 
-#include "models/user.hpp"
 #include "service/user_service.hpp"
 
 #include <userver/components/component.hpp>
@@ -20,7 +19,7 @@ class GetUserHandler : public userver::server::handlers::HttpHandlerBase {
             const override;
             
     private:
-        UserService user_service_;
+        const UserService& user_service_;
         
 };
 

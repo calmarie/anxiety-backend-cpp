@@ -10,7 +10,7 @@ UpdateUserName::UpdateUserName
     const userver::components::ComponentContext& component_context
 )
     : HttpHandlerBase(config, component_context),
-      user_service_(component_context.FindComponent<userver::components::Postgres>("postgres-db-1").GetCluster())
+      user_service_(component_context.FindComponent<UserService>())
 {}
 
 std::string UpdateUserName::HandleRequestThrow(

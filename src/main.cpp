@@ -32,6 +32,7 @@ int main(int argc, char* argv[]) {
             .Append<userver::server::handlers::TestsControl>()
             .Append<userver::congestion_control::Component>()
             .Append<anxiety_backend::Hello>()
+            .Append<anxiety_backend::UserService>()
             .Append<userver::components::Postgres>("postgres-db-1")
             .Append<anxiety_backend::HelloPostgres>()
             .Append<anxiety_backend::PostgresPing>()

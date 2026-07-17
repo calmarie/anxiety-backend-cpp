@@ -20,7 +20,7 @@ class DeleteUser : public userver::server::handlers::HttpHandlerBase {
            
     private:
         
-        UserService user_service_;
+        const UserService& user_service_;
 
 };
 

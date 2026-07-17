@@ -10,7 +10,7 @@ CreateUser::CreateUser
     const userver::components::ComponentContext& component_context
 )
     : HttpHandlerBase(config, component_context),
-      user_service_(component_context.FindComponent<userver::components::Postgres>("postgres-db-1").GetCluster())
+      user_service_(component_context.FindComponent<UserService>())
 {}
 
 std::string CreateUser::HandleRequestThrow(
@@ -31,6 +31,8 @@ std::string CreateUser::HandleRequestThrow(
         response["email"] = user_info.email;
         response["name"] = user_info.name;
         response["created_at"] = user_info.created_at;
+
+        response_code.SetStatus(userver::server::http::HttpStatus::kCreated);
     }
     catch (std::runtime_error& err)
     {

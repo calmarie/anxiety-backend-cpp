@@ -20,7 +20,7 @@ class CreateUser : public userver::server::handlers::HttpHandlerBase {
             const override;
             
     private:
-        UserService user_service_;
+        const UserService& user_service_;
         static UserInfo createUser (std::string json);
         
 };

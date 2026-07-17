@@ -2,12 +2,22 @@
 
 #include <stdexcept>
 
+#include <userver/components/component.hpp>
+#include <userver/storages/postgres/component.hpp>
+
 namespace anxiety_backend{
 
 
     UserService::UserService (
-        const userver::storages::postgres::ClusterPtr& cluster
-    ) : repo_(cluster) {}
+        const userver::components::ComponentConfig& config,
+        const userver::components::ComponentContext& context
+    ) : ComponentBase(config, context),
+        repo_ (
+            context.FindComponent<userver::components::Postgres>(
+                "postgres-db-1"
+            ).GetCluster()
+        )
+    {}
 
 
     UserInfo UserService::GetUser (std::string_view email) const

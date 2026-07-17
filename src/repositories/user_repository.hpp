@@ -5,7 +5,7 @@
 #include "models/user.hpp"
 
 namespace anxiety_backend {
-    class UserRepository{
+    class UserRepository final{
     public:
 
         explicit UserRepository(const userver::storages::postgres::ClusterPtr& cluster);
