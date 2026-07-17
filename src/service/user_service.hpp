@@ -1,8 +1,8 @@
 #pragma once
 
 #include "repositories/user_repository.hpp"
-#include "models/user.hpp"
-
+#include "models/user_model.hpp"
+#include "dto/user_dto.hpp"
 #include <userver/server/handlers/http_handler_base.hpp>
 #include <userver/storages/postgres/cluster.hpp>
 
@@ -19,10 +19,10 @@ public:
         const userver::components::ComponentContext& context
     );
 
-    UserInfo GetUser (std::string_view email) const;
+    UserModel GetUser (std::string_view email) const;
     void DeleteUser (std::string_view email) const;
-    UserInfo UpdateUserName (std::string_view email, std::string_view name) const;
-    UserInfo CreateUser (const UserInfo& user) const;
+    UserModel UpdateUserName (std::string_view email, std::string_view name) const;
+    UserModel CreateUser (const UserDto& user) const;
 
 private:
     UserRepository repo_;

@@ -33,6 +33,7 @@ add_library(
     src/repositories/user_repository.cpp
     src/handlers/update_user_name.cpp
     src/service/user_service.cpp
+    src/serializers/user_serializer.cpp
 
 )
 target_link_libraries(

@@ -1,10 +1,12 @@
 #include "delete_user.hpp"
 
+#include "serializers/user_serializer.hpp"
+
 #include <userver/storages/postgres/component.hpp>
 
 namespace anxiety_backend {
 
-DeleteUser::DeleteUser     
+DeleteUserHandler::DeleteUserHandler     
 (   
     const userver::components::ComponentConfig& config,
     const userver::components::ComponentContext& component_context
@@ -13,7 +15,7 @@ DeleteUser::DeleteUser
       user_service_(component_context.FindComponent<UserService>())
 {}
 
-std::string DeleteUser::HandleRequestThrow(
+std::string DeleteUserHandler::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
     userver::server::request::RequestContext&  
 )  const {
@@ -21,24 +23,23 @@ std::string DeleteUser::HandleRequestThrow(
     const auto email = request.GetPathArg("email");
     auto& response_code = request.GetHttpResponse();
 
-    userver::formats::json::ValueBuilder response;
+    userver::formats::json::Value response;
 
 
     try {
         user_service_.DeleteUser(email);
         response_code.SetStatus(userver::server::http::HttpStatus::kNoContent);
-        response["success"] = "success";
     }
     catch (std::invalid_argument& err){
-        response["error"] = err.what();
+        response = SerilizeError(err.what());
         response_code.SetStatus(userver::server::http::HttpStatus::kBadRequest);
     }
     catch (std::runtime_error& err){
-         response["error"] = err.what();
+        response = SerilizeError(err.what());
         response_code.SetStatus(userver::server::http::HttpStatus::kNotFound);
     }
 
-    return userver::formats::json::ToString(response.ExtractValue());
+    return userver::formats::json::ToString(response);
 
 }
 

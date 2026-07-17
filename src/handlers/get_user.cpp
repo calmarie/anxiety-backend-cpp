@@ -1,4 +1,6 @@
 #include "get_user.hpp"
+#include "serializers/user_serializer.hpp"
+
 #include <userver/storages/postgres/component.hpp>
 #include <stdexcept>
 
@@ -23,28 +25,26 @@ std::string GetUserHandler::HandleRequestThrow(
     const auto email = request.GetPathArg("email");
     auto& response_сode = request.GetHttpResponse();
 
-    userver::formats::json::ValueBuilder response;
+    userver::formats::json::Value response;
     try
     {
     auto user_info = user_service_.GetUser(email);
+    
+    response = SerilizeUser(user_info);
 
-    response["id"] = user_info.id;
-    response["email"] = user_info.email;
-    response["name"] = user_info.name;
-    response["created_at"] = user_info.created_at;
     }
     catch (std::runtime_error& err)
     {
-        response["error"] = err.what();
+        response = SerilizeError(err.what());
         response_сode.SetStatus(userver::server::http::HttpStatus::kNotFound);
     }
     catch (std::invalid_argument& err)
     {
-        response["error"] = err.what();
+        response = SerilizeError(err.what());
         response_сode.SetStatus(userver::server::http::HttpStatus::kBadRequest);
     }
 
-    return userver::formats::json::ToString(response.ExtractValue());
+    return userver::formats::json::ToString(response);
 
 }
 

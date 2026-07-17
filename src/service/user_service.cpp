@@ -1,6 +1,8 @@
 #include "user_service.hpp"
 
-#include <stdexcept>
+#include "exceptions/user_not_found_error.hpp"
+#include "exceptions/email_already_exists_error.hpp"
+#include "exceptions/email_is_required_error.hpp"
 
 #include <userver/components/component.hpp>
 #include <userver/storages/postgres/component.hpp>
@@ -20,14 +22,14 @@ namespace anxiety_backend{
     {}
 
 
-    UserInfo UserService::GetUser (std::string_view email) const
+    UserModel UserService::GetUser (std::string_view email) const
     {
 
-        if (email.empty()) throw std::invalid_argument("Email is required");
+        if (email.empty()) throw EmailIsRequiredError();
         
         auto userInfo = repo_.GetInfo(email);
 
-        if (!userInfo) throw std::runtime_error("User not found");
+        if (!userInfo) throw UserNotFoundError();
 
         return *userInfo;
     
@@ -35,27 +37,27 @@ namespace anxiety_backend{
 
     void UserService::DeleteUser (std::string_view email) const {
 
-        if (email.empty()) throw std::invalid_argument("Email is required");
+        if (email.empty()) throw EmailIsRequiredError();
         
         auto flag = repo_.Delete(email);
 
-        if (!flag) throw std::runtime_error("User not found");
+        if (!flag) throw UserNotFoundError();
 
     }
 
-    UserInfo UserService::UpdateUserName (std::string_view email, std::string_view name) const {
+    UserModel UserService::UpdateUserName (std::string_view email, std::string_view name) const {
 
-        if (email.empty()) throw std::invalid_argument("Email is required");
+        if (email.empty()) throw EmailIsRequiredError();
 
         auto flag = repo_.UpdateName(email, name);
 
-        if (!flag) throw std::runtime_error("User not found");
+        if (!flag) throw UserNotFoundError();
 
         return *repo_.GetInfo(email);  
 
     }
 
-    UserInfo UserService::CreateUser (const UserInfo& user) const {
+    UserModel UserService::CreateUser (const UserDto& user) const {
 
         try
         {
@@ -63,7 +65,7 @@ namespace anxiety_backend{
         }
 
         catch (const userver::storages::postgres::UniqueViolation&) {
-            throw std::runtime_error("Email already exists");
+            throw EmailAlreadyExistsError();
         }
 
         return *repo_.GetInfo(user.email);  

@@ -1,10 +1,12 @@
 #include "update_user_name.hpp"
 
+#include "serializers/user_serializer.hpp"
+
 #include <userver/storages/postgres/component.hpp>
 
 namespace anxiety_backend {
 
-UpdateUserName::UpdateUserName   
+UpdateUserNameHandler::UpdateUserNameHandler   
 (   
     const userver::components::ComponentConfig& config,
     const userver::components::ComponentContext& component_context
@@ -13,7 +15,7 @@ UpdateUserName::UpdateUserName
       user_service_(component_context.FindComponent<UserService>())
 {}
 
-std::string UpdateUserName::HandleRequestThrow(
+std::string UpdateUserNameHandler::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
     userver::server::request::RequestContext&  
 )  const {
@@ -24,29 +26,30 @@ std::string UpdateUserName::HandleRequestThrow(
 
     auto& response_сode = request.GetHttpResponse();
 
-    userver::formats::json::ValueBuilder response;
+
+    response_сode.SetStatus(userver::server::http::HttpStatus::kBadRequest);
+    
+    userver::formats::json::Value response;
 
     try
     {
     auto user_info = user_service_.UpdateUserName(email, name);
+    
+    response = SerilizeUser(user_info);
 
-    response["id"] = user_info.id;
-    response["email"] = user_info.email;
-    response["name"] = user_info.name;
-    response["created_at"] = user_info.created_at;
     }
     catch (std::runtime_error& err)
     {
-        response["error"] = err.what();
+        response = SerilizeError(err.what());
         response_сode.SetStatus(userver::server::http::HttpStatus::kNotFound);
     }
     catch (std::invalid_argument& err)
     {
-        response["error"] = err.what();
+        response = SerilizeError(err.what());
         response_сode.SetStatus(userver::server::http::HttpStatus::kBadRequest);
     }
 
-    return userver::formats::json::ToString(response.ExtractValue());
+    return userver::formats::json::ToString(response);
 
 }
 }

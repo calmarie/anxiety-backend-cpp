@@ -37,9 +37,9 @@ int main(int argc, char* argv[]) {
             .Append<anxiety_backend::HelloPostgres>()
             .Append<anxiety_backend::PostgresPing>()
             .Append<anxiety_backend::GetUserHandler>()
-            .Append<anxiety_backend::CreateUser>()
-            .Append<anxiety_backend::DeleteUser>()
-            .Append<anxiety_backend::UpdateUserName>()
+            .Append<anxiety_backend::CreateUserHandler>()
+            .Append<anxiety_backend::DeleteUserHandler>()
+            .Append<anxiety_backend::UpdateUserNameHandler>()
         ;
 
     return userver::utils::DaemonMain(argc, argv, component_list);

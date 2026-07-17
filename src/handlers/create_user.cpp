@@ -1,10 +1,12 @@
 #include "create_user.hpp"
 
+#include "serializers/user_serializer.hpp"
+
 #include <userver/storages/postgres/component.hpp>
 
 namespace anxiety_backend {
 
-CreateUser::CreateUser     
+CreateUserHandler::CreateUserHandler     
 (   
     const userver::components::ComponentConfig& config,
     const userver::components::ComponentContext& component_context
@@ -13,48 +15,45 @@ CreateUser::CreateUser
       user_service_(component_context.FindComponent<UserService>())
 {}
 
-std::string CreateUser::HandleRequestThrow(
+std::string CreateUserHandler::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
     userver::server::request::RequestContext&  
 )  const {
     
     std::string body = request.RequestBody();
-    UserInfo user = createUser(body);
+    UserDto dto = createUser(body);
 
     auto& response_code = request.GetHttpResponse();
     
-    userver::formats::json::ValueBuilder response;
+    userver::formats::json::Value response;
     try {
-        auto user_info = user_service_.CreateUser(user);
+        auto user_info = user_service_.CreateUser(dto);
 
-        response["id"] = user_info.id;
-        response["email"] = user_info.email;
-        response["name"] = user_info.name;
-        response["created_at"] = user_info.created_at;
+        response = SerilizeUser(user_info);
 
         response_code.SetStatus(userver::server::http::HttpStatus::kCreated);
     }
     catch (std::runtime_error& err)
     {
-        response["error"] = err.what();
+        response = SerilizeError(err.what());
         response_code.SetStatus(userver::server::http::HttpStatus::kConflict);
     }
 
-    return userver::formats::json::ToString(response.ExtractValue());
+    return userver::formats::json::ToString(response);
 
 }
 
 
 
-UserInfo CreateUser::createUser (std::string body) {
+UserDto CreateUserHandler::createUser (std::string body) {
     auto json = userver::formats::json::FromString(body);
-    UserInfo user;
+    UserDto dto;
 
-    user.email = json["email"].As<std::string>();
-    user.name = json["name"].As<std::string>();
-    user.password_hash = "hardcoded_hash_123";
+    dto.email = json["email"].As<std::string>();
+    dto.name = json["name"].As<std::string>();
+    dto.password = json["password"].As<std::string>();
 
-    return user;
+    return dto;
 
 }
 

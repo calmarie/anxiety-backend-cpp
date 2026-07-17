@@ -6,19 +6,20 @@ namespace anxiety_backend {
     UserRepository::UserRepository(const userver::storages::postgres::ClusterPtr& cluster)
     : pg_cluster_(std::move(cluster)){} 
 
-    void UserRepository::Create(const UserInfo &user) const{
+    void UserRepository::Create(const UserDto &user) const{
+        std::string password_hash = "hardcoded_hash_123";
         const auto res = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
             "INSERT into users (email, name, password_hash) "
             "VALUES ($1,$2,$3)",
             user.email,
             user.name,
-            user.password_hash
+            password_hash
         );
     }
 
 
-    std::optional<UserInfo> UserRepository::GetInfo (std::string_view email) const{
+    std::optional<UserModel> UserRepository::GetInfo (std::string_view email) const{
         const auto res = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
             "SELECT id::text,email,name,created_at::text FROM users"
@@ -28,7 +29,7 @@ namespace anxiety_backend {
 
         const auto &row = res[0];
 
-        UserInfo u;
+        UserModel u;
 
             u.id = row["id"].As<std::string>();
             u.email = row["email"].As<std::string>();
