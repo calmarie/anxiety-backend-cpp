@@ -7,7 +7,7 @@ namespace anxiety_backend {
     : pg_cluster_(std::move(cluster)){} 
 
     void UserRepository::Create(const UserDto &user) const{
-        std::string password_hash = "hardcoded_hash_123";
+        std::string password_hash = hasher_.Hash(user.password);
         const auto res = pg_cluster_->Execute(
             userver::storages::postgres::ClusterHostType::kMaster,
             "INSERT into users (email, name, password_hash) "
@@ -31,7 +31,7 @@ namespace anxiety_backend {
 
         UserModel u;
 
-            u.id = row["id"].As<std::string>();
+            u.uuid = row["id"].As<std::string>();
             u.email = row["email"].As<std::string>();
             u.name = row["name"].As<std::string>();
             u.created_at = row["created_at"].As<std::string>();
@@ -61,6 +61,18 @@ namespace anxiety_backend {
         );
 
         return res.RowsAffected() > 0;
+    }
+
+    std::optional<std::string> UserRepository::GetHash (std::string_view email) const{
+        const auto res = pg_cluster_->Execute(
+            userver::storages::postgres::ClusterHostType::kMaster,
+            "SELECT password_hash FROM users"
+            " WHERE email = $1",
+            email
+    );
+
+        return res.AsSingleRow<std::string>();
+
     }
 
 

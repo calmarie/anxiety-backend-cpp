@@ -9,19 +9,18 @@
 
 namespace anxiety_backend {
 
-class DeleteUserHandler : public userver::server::handlers::HttpHandlerBase {
+class GetUserHandler : public userver::server::handlers::HttpHandlerBase {
     public:
-        static constexpr std::string_view kName = "handler-pg-delete-user";
+        static constexpr std::string_view kName = "handler-get-user";
 
-        DeleteUserHandler(const userver::components::ComponentConfig&, const userver::components::ComponentContext&);
+        GetUserHandler(const userver::components::ComponentConfig&, const userver::components::ComponentContext&);
 
         std::string HandleRequestThrow(const userver::server::http::HttpRequest&, userver::server::request::RequestContext&)
             const override;
-           
+            
     private:
-        
         const UserService& user_service_;
-
+        
 };
 
 }

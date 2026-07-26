@@ -17,10 +17,12 @@
 #include <hello.hpp>
 #include <hello_postgres.hpp> 
 #include <handlers/bd_ping.hpp>
-#include <handlers/get_user.hpp>
-#include <handlers/create_user.hpp>
-#include <handlers/delete_user.hpp>
-#include <handlers/update_user_name.hpp>
+#include <handlers/user_crud/get_user.hpp>
+#include <handlers/user_crud/create_user.hpp>
+#include <handlers/user_crud/delete_user.hpp>
+#include <handlers/user_crud/update_user_name.hpp>
+#include <handlers/auth/login.hpp>
+#include <handlers/auth/register.hpp>
 
 int main(int argc, char* argv[]) {
     auto component_list =
@@ -32,7 +34,9 @@ int main(int argc, char* argv[]) {
             .Append<userver::server::handlers::TestsControl>()
             .Append<userver::congestion_control::Component>()
             .Append<anxiety_backend::Hello>()
+            .Append<anxiety_backend::JwtService>()
             .Append<anxiety_backend::UserService>()
+            .Append<anxiety_backend::AuthService>()
             .Append<userver::components::Postgres>("postgres-db-1")
             .Append<anxiety_backend::HelloPostgres>()
             .Append<anxiety_backend::PostgresPing>()
@@ -40,6 +44,9 @@ int main(int argc, char* argv[]) {
             .Append<anxiety_backend::CreateUserHandler>()
             .Append<anxiety_backend::DeleteUserHandler>()
             .Append<anxiety_backend::UpdateUserNameHandler>()
+            .Append<anxiety_backend::LogInUserHandler>()
+            .Append<anxiety_backend::RegisterHandler>()
+            
         ;
 
     return userver::utils::DaemonMain(argc, argv, component_list);

@@ -27,20 +27,33 @@ add_library(
     src/hello.cpp #
     src/hello_postgres.cpp
     src/handlers/bd_ping.cpp
-    src/handlers/get_user.cpp
-    src/handlers/create_user.cpp
-    src/handlers/delete_user.cpp
+    src/handlers/user_crud/get_user.cpp
+    src/handlers/user_crud/create_user.cpp
+    src/handlers/user_crud/delete_user.cpp
     src/repositories/user_repository.cpp
-    src/handlers/update_user_name.cpp
+    src/handlers/user_crud/update_user_name.cpp
     src/service/user_service.cpp
     src/serializers/user_serializer.cpp
+    src/security/password_hasher.cpp
+    src/handlers/auth/login.cpp
+    src/handlers/auth/register.cpp
+    src/security/jwt_service.cpp
+    src/service/auth_service.cpp
 
 )
+
+find_library(ARGON2_LIBRARY argon2 REQUIRED)
+
+find_package(OpenSSL REQUIRED)
+find_package(jwt-cpp CONFIG REQUIRED)
+
 target_link_libraries(
     ${PROJECT_NAME}_objs
     PUBLIC userver-core
            userver-postgresql
            userver-universal
+           ${ARGON2_LIBRARY}
+           jwt-cpp::jwt-cpp
 )
 
 target_include_directories(

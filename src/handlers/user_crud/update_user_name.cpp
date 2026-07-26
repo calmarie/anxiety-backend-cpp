@@ -25,9 +25,6 @@ std::string UpdateUserNameHandler::HandleRequestThrow(
     auto name = json["name"].As<std::string>();
 
     auto& response_сode = request.GetHttpResponse();
-
-
-    response_сode.SetStatus(userver::server::http::HttpStatus::kBadRequest);
     
     userver::formats::json::Value response;
 

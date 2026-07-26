@@ -75,22 +75,32 @@ components_manager:
             method: GET
             task_processor: main-task-processor  # Run it on CPU bound task processor
         
-        handler-pg-get-user:
+        handler-get-user:
             path: /user/{email}
             method: GET
             task_processor: main-task-processor
         
-        handler-pg-delete-user:
+        handler-delete-user:
             path: /user/{email}
             method: DELETE
             task_processor: main-task-processor
 
-        handler-pg-create-user:
-            path: /user
+        handler-create-user:
+            path: /user/create
+            method: POST
+            task_processor: main-task-processor
+
+        handler-login:
+            path: /login
             method: POST
             task_processor: main-task-processor
         
-        handler-pg-update-user-name:
+        handler-register:
+            path: /register
+            method: POST
+            task_processor: main-task-processor
+        
+        handler-update-user-name:
             path: /user/name
             method: PATCH
             task_processor: main-task-processor
@@ -103,6 +113,11 @@ components_manager:
             dns_resolver: async
             sync-start: true
             connlimit_mode: manual
+
+        jwt-service:
+            secret: JWT_SECRET
         
         user-service: {}
+
+        auth-service: {}
         

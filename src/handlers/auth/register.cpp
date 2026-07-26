@@ -1,4 +1,4 @@
-#include "create_user.hpp"
+#include "register.hpp"
 
 #include "serializers/user_serializer.hpp"
 
@@ -6,31 +6,29 @@
 
 namespace anxiety_backend {
 
-CreateUserHandler::CreateUserHandler     
+RegisterHandler::RegisterHandler     
 (   
     const userver::components::ComponentConfig& config,
     const userver::components::ComponentContext& component_context
 )
     : HttpHandlerBase(config, component_context),
-      user_service_(component_context.FindComponent<UserService>())
+      auth_service_(component_context.FindComponent<AuthService>())
 {}
 
-std::string CreateUserHandler::HandleRequestThrow(
+std::string RegisterHandler::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
     userver::server::request::RequestContext&  
 )  const {
     
     std::string body = request.RequestBody();
-    UserDto dto = createUser(body);
+    UserDto dto = Deserialize(body);
 
     auto& response_code = request.GetHttpResponse();
     
     userver::formats::json::Value response;
     try {
-        auto user_info = user_service_.CreateUser(dto);
-
-        response = SerilizeUser(user_info);
-
+        auto access_token = auth_service_.Register(dto);
+        response = SerilizeJwt(access_token);
         response_code.SetStatus(userver::server::http::HttpStatus::kCreated);
     }
     catch (std::runtime_error& err)
@@ -45,7 +43,7 @@ std::string CreateUserHandler::HandleRequestThrow(
 
 
 
-UserDto CreateUserHandler::createUser (std::string body) {
+UserDto RegisterHandler::Deserialize (std::string body) const{
     auto json = userver::formats::json::FromString(body);
     UserDto dto;
 
