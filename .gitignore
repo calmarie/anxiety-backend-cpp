@@ -15,4 +15,5 @@ Testing/
 Makefile.local
 CMakeUserPresets.json
 .env
-jwt-cpp/
+/jwt-cpp/
+/anxiety-userver/
