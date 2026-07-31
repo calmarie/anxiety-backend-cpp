@@ -49,7 +49,12 @@ include(FetchContent)
 
 find_package(jwt-cpp CONFIG QUIET)
 
+find_package(jwt-cpp CONFIG QUIET)
+
 if(NOT jwt-cpp_FOUND)
+    set(JWT_BUILD_EXAMPLES OFF CACHE BOOL "Disable jwt-cpp examples" FORCE)
+    set(JWT_BUILD_TESTS OFF CACHE BOOL "Disable jwt-cpp tests" FORCE)
+
     FetchContent_Declare(
         jwt-cpp
         GIT_REPOSITORY https://github.com/Thalhammer/jwt-cpp.git
