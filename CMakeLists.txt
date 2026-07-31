@@ -23,9 +23,6 @@ include_directories(src)
 
 add_library(
     ${PROJECT_NAME}_objs OBJECT
-    src/greeting.cpp #
-    src/hello.cpp #
-    src/hello_postgres.cpp
     src/handlers/bd_ping.cpp
     src/handlers/user_crud/get_user.cpp
     src/handlers/user_crud/create_user.cpp
@@ -47,7 +44,19 @@ add_library(
 find_library(ARGON2_LIBRARY argon2 REQUIRED)
 
 find_package(OpenSSL REQUIRED)
-find_package(jwt-cpp CONFIG REQUIRED)
+
+include(FetchContent)
+
+find_package(jwt-cpp CONFIG QUIET)
+
+if(NOT jwt-cpp_FOUND)
+    FetchContent_Declare(
+        jwt-cpp
+        GIT_REPOSITORY https://github.com/Thalhammer/jwt-cpp.git
+        GIT_TAG v0.7.1
+    )
+    FetchContent_MakeAvailable(jwt-cpp)
+endif()
 
 target_link_libraries(
     ${PROJECT_NAME}_objs
