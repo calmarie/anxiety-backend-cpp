@@ -1,4 +1,7 @@
 components_manager:
+    coro_pool:
+        stack_usage_monitor_enabled: false
+        
     task_processors:  # Task processor is an executor for coroutine tasks
 
         main-task-processor:  # Make a task processor for CPU-bound coroutine tasks.
