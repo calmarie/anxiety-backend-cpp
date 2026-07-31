@@ -9,14 +9,19 @@
 #include "exceptions/incorrect_password_or_email_error.hpp"
 
 #include "security/password_hasher.hpp"
-
+#include "security/refresh_token_gen.hpp"
 
 namespace anxiety_backend {
     AuthService::AuthService (
         const userver::components::ComponentConfig& config,
         const userver::components::ComponentContext& context
     ) : ComponentBase(config, context),
-        repo_ (
+        user_repo_ (
+            context.FindComponent<userver::components::Postgres>(
+                "postgres-db-1"
+            ).GetCluster()
+        ),
+        refresh_token_repo_ (
             context.FindComponent<userver::components::Postgres>(
                 "postgres-db-1"
             ).GetCluster()
@@ -24,28 +29,25 @@ namespace anxiety_backend {
         jwt_(context.FindComponent<JwtService>())
     {}
 
-    std::string AuthService::Register (const UserDto& user) const{
+    AuthTokens AuthService::Register (const UserDto& user) const{
         try {
-            repo_.Create(user);
+            user_repo_.Create(user);
         }
         catch (const userver::storages::postgres::UniqueViolation&) {
              throw EmailAlreadyExistsError();
         }
 
-        auto user_info = *repo_.GetInfo(user.email);  
+        auto user_info = *user_repo_.GetInfo(user.email);  
 
-        std::string token = jwt_.CreateToken(user_info.uuid);
-        return token;
-
-        
+        return CreateTokens(user_info.uuid);
 
     }
 
-    std::string AuthService::Login (const UserDto& user) const{
+    AuthTokens AuthService::Login (const UserDto& user) const{
 
     if (user.email.empty() || user.password.empty()) throw EmailIsRequiredError();
     
-    auto password_hash = repo_.GetHash(user.email);
+    auto password_hash = user_repo_.GetHash(user.email);
     
     if (password_hash->empty())
         throw IncorrectPasswordOrEmailError();
@@ -56,9 +58,25 @@ namespace anxiety_backend {
     if (flag){
         throw IncorrectPasswordOrEmailError();
     }
-    auto user_info = *repo_.GetInfo(user.email);  
+    auto user_info = *user_repo_.GetInfo(user.email);  
     
-    return  jwt_.CreateToken(user_info.uuid);
+    return  CreateTokens(user_info.uuid);
+
+    }
+
+    AuthTokens AuthService::CreateTokens (std::string_view uuid) const{
+        AuthTokens tokens;
+        tokens.access_token = jwt_.CreateAccessToken(uuid);
+        tokens.refresh_token = refresh_token_gen_.GenerateRefreshToken();
+        refresh_token_repo_.SaveRefreshToken(
+            refresh_token_gen_.HashRefreshToken(tokens.refresh_token),
+            uuid
+        );
+
+        
+        //     throw RefreshTokenCreationError();
+
+        return tokens;
 
     }
 }

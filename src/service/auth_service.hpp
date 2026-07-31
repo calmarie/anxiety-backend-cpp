@@ -5,6 +5,9 @@
 #include <userver/server/handlers/http_handler_base.hpp>
 #include <userver/storages/postgres/cluster.hpp>
 
+#include "dto/auth_dto.hpp"
+#include "security/refresh_token_gen.hpp"
+#include "repositories/refresh_token_repository.hpp"
 #include "security/jwt_service.hpp"
 namespace anxiety_backend {
 
@@ -17,12 +20,17 @@ public:
         const userver::components::ComponentContext& context
     );
 
-    std::string Register (const UserDto& user) const;
-    std::string Login (const UserDto& user) const;
+    AuthTokens Register (const UserDto& user) const;
+    AuthTokens Login (const UserDto& user) const;
 
 private:
-    UserRepository repo_;
+    AuthTokens CreateTokens (std::string_view uuid) const;
+
+    UserRepository user_repo_;
+    RefreshTokenRepository refresh_token_repo_;
     const JwtService& jwt_;
+    RefreshTokenGenerator refresh_token_gen_;
+    
 
 };
 

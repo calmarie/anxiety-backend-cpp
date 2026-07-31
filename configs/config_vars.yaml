@@ -7,4 +7,4 @@ is-testing: false
 server-port: 8080
 
 # change to URI of your postgres database
-pg-connection: postgresql://postgres:postgres@localhost:5432/anxiety_backend_db_1
+##pg-connection: $DB_CONNECTION

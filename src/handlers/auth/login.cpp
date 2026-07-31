@@ -1,5 +1,6 @@
 #include "login.hpp"
 #include "serializers/user_serializer.hpp"
+#include "dto/auth_dto.hpp"
 
 #include <userver/storages/postgres/component.hpp>
 #include <stdexcept>
@@ -29,8 +30,8 @@ std::string LogInUserHandler::HandleRequestThrow(
 
     try
     {
-        auto access_token = auth_service_.Login(dto);
-        response = SerilizeJwt(access_token);
+        auto tokens = auth_service_.Login(dto);
+        response = SerilizeTokens(tokens);
     }
     catch (std::runtime_error& err)
     {

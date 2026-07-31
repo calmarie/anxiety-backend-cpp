@@ -1,5 +1,5 @@
 #include "register.hpp"
-
+#include "dto/auth_dto.hpp"
 #include "serializers/user_serializer.hpp"
 
 #include <userver/storages/postgres/component.hpp>
@@ -27,8 +27,8 @@ std::string RegisterHandler::HandleRequestThrow(
     
     userver::formats::json::Value response;
     try {
-        auto access_token = auth_service_.Register(dto);
-        response = SerilizeJwt(access_token);
+        auto tokens = auth_service_.Register(dto);
+        response = SerilizeTokens(tokens);
         response_code.SetStatus(userver::server::http::HttpStatus::kCreated);
     }
     catch (std::runtime_error& err)

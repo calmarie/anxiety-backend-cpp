@@ -39,6 +39,8 @@ add_library(
     src/handlers/auth/register.cpp
     src/security/jwt_service.cpp
     src/service/auth_service.cpp
+    src/security/refresh_token_gen.cpp
+    src/repositories/refresh_token_repository.cpp
 
 )
 

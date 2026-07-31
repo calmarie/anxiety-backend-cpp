@@ -56,7 +56,7 @@ bool PasswordHasher::Verify(std::string_view password_hash, std::string_view pas
 
 std::array<uint8_t ,SALTLEN> PasswordHasher::GenerateSalt() const {
     std::array<uint8_t ,SALTLEN> buffer;
-    if (RAND_bytes(buffer.data(), 16) != 1) {
+    if (RAND_bytes(buffer.data(), SALTLEN) != 1) {
         throw std::runtime_error("Generation of salt with OpenSSL");
     }
     return buffer;

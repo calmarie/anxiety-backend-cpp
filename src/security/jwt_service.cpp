@@ -26,7 +26,7 @@ userver::yaml_config::Schema JwtService::GetStaticConfigSchema() {
     )");
 }
 
-std::string JwtService::CreateToken (std::string_view uuid) const{
+std::string JwtService::CreateAccessToken (std::string_view uuid) const{
     auto expiration = std::chrono::minutes{60};
 
     auto token = jwt::create()
@@ -41,7 +41,7 @@ std::string JwtService::CreateToken (std::string_view uuid) const{
 
 }
 
-bool JwtService::VerifyToken (std::string_view token) const{
+bool JwtService::VerifyAccessToken (std::string_view token) const{
 
     try {
         std::error_code ec;
@@ -57,7 +57,8 @@ bool JwtService::VerifyToken (std::string_view token) const{
         return false;
     }
 
-
 }
+
+
 
 }

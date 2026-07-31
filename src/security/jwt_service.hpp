@@ -16,8 +16,8 @@ public:
     const userver::components::ComponentConfig& config,
     const userver::components::ComponentContext& context
     );
-    std::string CreateToken (std::string_view uuid) const;
-    bool VerifyToken (std::string_view token) const;
+    std::string CreateAccessToken (std::string_view uuid) const;
+    bool VerifyAccessToken (std::string_view token) const;
 
     static userver::yaml_config::Schema GetStaticConfigSchema();
 private:

@@ -76,3 +76,10 @@ $(addprefix docker-cmake-, $(PRESETS)) $(addprefix docker-build-, $(PRESETS)) $(
 		env CCACHE_DIR=$$PWD/.ccache \
 		    HOME=$$HOME \
 		    $$PWD/run_as_user.sh $(shell /bin/id -u) $(shell /bin/id -g) make $*
+
+.PHONY: run-debug
+run-debug: build-debug
+	@set -a; . ./.env; set +a; \
+	./build-debug/anxiety_backend \
+		--config ./configs/static_config.yaml \
+		--config_vars ./configs/config_vars.yaml

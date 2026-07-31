@@ -18,9 +18,11 @@ namespace anxiety_backend {
 
         return response.ExtractValue();
     }
-    userver::formats::json::Value SerilizeJwt (const std::string& token){
+    userver::formats::json::Value SerilizeTokens (const AuthTokens& tokens){
         userver::formats::json::ValueBuilder response;
-        response["token"] = token;
+        response["access_token"] = tokens.access_token;
+        response["refresh_token"] = tokens.refresh_token;
+
 
         return response.ExtractValue();
     }

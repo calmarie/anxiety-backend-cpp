@@ -104,10 +104,9 @@ components_manager:
             path: /user/name
             method: PATCH
             task_processor: main-task-processor
-        
 
         postgres-db-1:
-            dbconnection: $pg-connection
+            ##dbconnection: $pg-connection
             dbconnection#env: DB_CONNECTION
             blocking_task_processor: fs-task-processor
             dns_resolver: async
@@ -115,7 +114,7 @@ components_manager:
             connlimit_mode: manual
 
         jwt-service:
-            secret: JWT_SECRET
+            secret#env: JWT_SECRET
         
         user-service: {}
 
