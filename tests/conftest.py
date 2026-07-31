@@ -29,3 +29,9 @@ def pgsql_local(service_source_dir, pgsql_local_create):
     )
     return pgsql_local_create(list(databases.values()))
 
+@pytest.fixture(scope='session')
+def service_env():
+    return {
+        'JWT_SECRET': 'test-only-jwt-secret',
+    }
+
