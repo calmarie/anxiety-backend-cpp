@@ -42,7 +42,7 @@ add_library(
 )
 
 find_library(ARGON2_LIBRARY argon2 REQUIRED)
-
+find_package(concurrentqueue CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 
 include(FetchContent)
@@ -65,6 +65,7 @@ target_link_libraries(
            userver-universal
            ${ARGON2_LIBRARY}
            jwt-cpp::jwt-cpp
+           concurrentqueue::concurrentqueue
 )
 
 target_include_directories(
