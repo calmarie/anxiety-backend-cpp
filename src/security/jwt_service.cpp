@@ -27,7 +27,7 @@ userver::yaml_config::Schema JwtService::GetStaticConfigSchema() {
 }
 
 std::string JwtService::CreateAccessToken (std::string_view uuid) const{
-    auto expiration = std::chrono::minutes{60};
+    auto expiration = std::chrono::seconds{60*60};
 
     auto token = jwt::create()
     .set_type("JWS")
