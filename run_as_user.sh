@@ -11,7 +11,7 @@ groupadd --gid $OLD_GID --non-unique user
 useradd --uid $OLD_UID --gid $OLD_GID --non-unique user
 
 apt-get update
-apt-get install -y --no-install-recommends libargon2-dev
+apt-get install -y --no-install-recommends libargon2-dev libconcurrentqueue-dev
 
 
 sudo -E -u user "$@"
