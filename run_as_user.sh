@@ -10,4 +10,7 @@ shift; shift
 groupadd --gid $OLD_GID --non-unique user
 useradd --uid $OLD_UID --gid $OLD_GID --non-unique user
 
+apt-get update
+apt-get install -y --no-install-recommends libargon2-dev
+
 sudo -E -u user "$@"
