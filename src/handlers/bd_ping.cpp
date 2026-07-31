@@ -1,6 +1,5 @@
 #include "bd_ping.hpp"
 
-#include <greeting.hpp>
 #include <userver/storages/postgres/component.hpp>
 
 namespace anxiety_backend {

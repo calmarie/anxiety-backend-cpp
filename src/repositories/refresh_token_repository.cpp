@@ -26,4 +26,15 @@ namespace anxiety_backend {
         return res.RowsAffected() > 0;
     }
 
+    // std::string GetTokenHash () const {
+
+    //     const auto res = pg_cluster_->Execute(
+    //         userver::storages::postgres::ClusterHostType::kMaster,
+    //         "SELECT from refresh_tokens "
+    //         "(token_hash, expires_at) "
+    //         "VALUES ($1::uuid,$2,$3,$4)",
+    //     );
+
+    // }
+
 }

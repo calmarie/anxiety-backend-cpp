@@ -60,9 +60,8 @@ endif()
 
 target_link_libraries(
     ${PROJECT_NAME}_objs
-    PUBLIC userver-core
-           userver-postgresql
-           userver-universal
+    PUBLIC userver::core
+           userver::postgresql
            ${ARGON2_LIBRARY}
            jwt-cpp::jwt-cpp
            concurrentqueue::concurrentqueue

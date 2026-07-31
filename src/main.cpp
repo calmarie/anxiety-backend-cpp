@@ -14,8 +14,6 @@
 
 #include <userver/utils/daemon_run.hpp>
 
-#include <hello.hpp>
-#include <hello_postgres.hpp> 
 #include <handlers/bd_ping.hpp>
 #include <handlers/user_crud/get_user.hpp>
 #include <handlers/user_crud/create_user.hpp>
@@ -33,12 +31,10 @@ int main(int argc, char* argv[]) {
             .Append<userver::clients::dns::Component>()
             .Append<userver::server::handlers::TestsControl>()
             .Append<userver::congestion_control::Component>()
-            .Append<anxiety_backend::Hello>()
             .Append<anxiety_backend::JwtService>()
             .Append<anxiety_backend::UserService>()
             .Append<anxiety_backend::AuthService>()
             .Append<userver::components::Postgres>("postgres-db-1")
-            .Append<anxiety_backend::HelloPostgres>()
             .Append<anxiety_backend::PostgresPing>()
             .Append<anxiety_backend::GetUserHandler>()
             .Append<anxiety_backend::CreateUserHandler>()

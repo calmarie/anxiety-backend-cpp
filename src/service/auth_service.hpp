@@ -22,6 +22,7 @@ public:
 
     AuthTokens Register (const UserDto& user) const;
     AuthTokens Login (const UserDto& user) const;
+    // AuthTokens Refresh (const UserDto& user) const;
 
 private:
     AuthTokens CreateTokens (std::string_view uuid) const;
