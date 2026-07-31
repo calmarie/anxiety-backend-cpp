@@ -30,10 +30,13 @@ namespace anxiety_backend {
 
     //     const auto res = pg_cluster_->Execute(
     //         userver::storages::postgres::ClusterHostType::kMaster,
-    //         "SELECT from refresh_tokens "
-    //         "(token_hash, expires_at) "
-    //         "VALUES ($1::uuid,$2,$3,$4)",
+    //         "DELETE from refresh_tokens "
+    //         "WHERE token_hash = $1 "
+    //         "AND expires_at > NOW() "
+    //         "RETURNING user_id;",
     //     );
+
+    //     return res.AsSingleRow<res>;
 
     // }
 

@@ -55,6 +55,11 @@ components_manager:
             path: /tests/{action}
             method: POST
             task_processor: main-task-processor
+        
+        handler-ping:
+            path: /ping
+            method: GET
+            task_processor: main-task-processor
 
         handler-pg-ping:
             path: /db-ping
