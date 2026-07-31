@@ -74,6 +74,7 @@ $(addprefix docker-cmake-, $(PRESETS)) $(addprefix docker-build-, $(PRESETS)) $(
 		-w $$PWD \
 		$(DOCKER_IMAGE) \
 		env CCACHE_DIR=$$PWD/.ccache \
+			UV_CACHE_DIR=$$PWD/.cache/uv \
 		    HOME=$$HOME \
 		    $$PWD/run_as_user.sh $(shell /bin/id -u) $(shell /bin/id -g) make $*
 
