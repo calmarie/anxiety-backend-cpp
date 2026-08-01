@@ -3,7 +3,7 @@
 #include <userver/components/component.hpp>
 #include <userver/storages/postgres/component.hpp>
 
-
+#include "exceptions/wrong_refresh_token_error.hpp"
 #include "exceptions/email_already_exists_error.hpp"
 #include "exceptions/email_is_required_error.hpp"
 #include "exceptions/incorrect_password_or_email_error.hpp"
@@ -80,9 +80,19 @@ namespace anxiety_backend {
 
     }
 
-    // AuthTokens Refresh (std::string_view refresh_token) const{
+    AuthTokens AuthService::Refresh (std::string_view refresh_token) const{
 
+        auto resresh_token_hash = refresh_token_gen_.
+        HashRefreshToken(refresh_token);
 
+        auto user_id = refresh_token_repo_.
+        VerifyToken(resresh_token_hash);
 
-    // }
+        if (!user_id){
+            throw WrongRefreshTokenError();
+        } 
+       
+        return CreateTokens(*user_id);
+
+    }
 }

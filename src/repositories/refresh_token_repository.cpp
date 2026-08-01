@@ -26,18 +26,21 @@ namespace anxiety_backend {
         return res.RowsAffected() > 0;
     }
 
-    // std::string GetTokenHash () const {
+    std::optional<std::string> RefreshTokenRepository::VerifyToken (
+        std::string_view token_hash
+    ) const {
 
-    //     const auto res = pg_cluster_->Execute(
-    //         userver::storages::postgres::ClusterHostType::kMaster,
-    //         "DELETE from refresh_tokens "
-    //         "WHERE token_hash = $1 "
-    //         "AND expires_at > NOW() "
-    //         "RETURNING user_id;",
-    //     );
+        const auto res = pg_cluster_->Execute(
+            userver::storages::postgres::ClusterHostType::kMaster,
+            "DELETE from refresh_tokens "
+            "WHERE token_hash = $1 "
+            "AND expires_at > NOW() "
+            "RETURNING user_id::text",
+            token_hash
+        );
 
-    //     return res.AsSingleRow<res>;
+        return res.AsSingleRow<std::string>();
 
-    // }
+    }
 
 }

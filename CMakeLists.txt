@@ -34,6 +34,7 @@ add_library(
     src/security/password_hasher.cpp
     src/handlers/auth/login.cpp
     src/handlers/auth/register.cpp
+    src/handlers/auth/refresh.cpp
     src/security/jwt_service.cpp
     src/service/auth_service.cpp
     src/security/refresh_token_gen.cpp

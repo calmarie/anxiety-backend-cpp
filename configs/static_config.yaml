@@ -82,12 +82,17 @@ components_manager:
             task_processor: main-task-processor
 
         handler-login:
-            path: /login
+            path: /auth/login
             method: POST
             task_processor: main-task-processor
         
         handler-register:
-            path: /register
+            path: /auth/register
+            method: POST
+            task_processor: main-task-processor
+        
+        handler-refresh-tokens:
+            path: /auth/refresh
             method: POST
             task_processor: main-task-processor
         
@@ -95,6 +100,7 @@ components_manager:
             path: /user/name
             method: PATCH
             task_processor: main-task-processor
+
 
         postgres-db-1:
             ##dbconnection: $pg-connection

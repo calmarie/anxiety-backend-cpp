@@ -1,11 +1,10 @@
-#include "register.hpp"
-#include "serializers/user_serializer.hpp"
+#include "refresh.hpp"
 
-#include <userver/storages/postgres/component.hpp>
+#include "serializers/user_serializer.hpp"
 
 namespace anxiety_backend {
 
-RegisterHandler::RegisterHandler     
+RefreshTokensHandler::RefreshTokensHandler     
 (   
     const userver::components::ComponentConfig& config,
     const userver::components::ComponentContext& component_context
@@ -14,19 +13,19 @@ RegisterHandler::RegisterHandler
       auth_service_(component_context.FindComponent<AuthService>())
 {}
 
-std::string RegisterHandler::HandleRequestThrow(
+std::string RefreshTokensHandler::HandleRequestThrow(
     const userver::server::http::HttpRequest& request,
     userver::server::request::RequestContext&  
 )  const {
     
-    std::string body = request.RequestBody();
-    UserDto dto = Deserialize(body);
+    auto json = userver::formats::json::FromString(request.RequestBody());
+    auto refresh_token = json["refresh_token"].As<std::string>();
 
     auto& response_code = request.GetHttpResponse();
     
     userver::formats::json::Value response;
     try {
-        auto tokens = auth_service_.Register(dto);
+        auto tokens = auth_service_.Refresh(refresh_token);
         response = SerilizeTokens(tokens);
         response_code.SetStatus(userver::server::http::HttpStatus::kCreated);
     }
@@ -37,20 +36,6 @@ std::string RegisterHandler::HandleRequestThrow(
     }
 
     return userver::formats::json::ToString(response);
-
-}
-
-
-
-UserDto RegisterHandler::Deserialize (std::string body) const{
-    auto json = userver::formats::json::FromString(body);
-    UserDto dto;
-
-    dto.email = json["email"].As<std::string>();
-    dto.name = json["name"].As<std::string>();
-    dto.password = json["password"].As<std::string>();
-
-    return dto;
 
 }
 

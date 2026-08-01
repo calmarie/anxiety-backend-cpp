@@ -21,6 +21,8 @@
 #include <handlers/user_crud/update_user_name.hpp>
 #include <handlers/auth/login.hpp>
 #include <handlers/auth/register.hpp>
+#include <handlers/auth/register.hpp>
+#include <handlers/auth/refresh.hpp>
 
 int main(int argc, char* argv[]) {
     auto component_list =
@@ -42,7 +44,8 @@ int main(int argc, char* argv[]) {
             .Append<anxiety_backend::UpdateUserNameHandler>()
             .Append<anxiety_backend::LogInUserHandler>()
             .Append<anxiety_backend::RegisterHandler>()
-            
+            .Append<anxiety_backend::RefreshTokensHandler>()
+        
         ;
 
     return userver::utils::DaemonMain(argc, argv, component_list);
