@@ -17,3 +17,4 @@ CMakeUserPresets.json
 .env
 /jwt-cpp/
 /anxiety-userver/
+/configs/secdist.json

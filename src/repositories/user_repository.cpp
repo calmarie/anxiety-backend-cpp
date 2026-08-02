@@ -3,9 +3,13 @@
 
 namespace anxiety_backend {
 
-    UserRepository::UserRepository(const userver::storages::postgres::ClusterPtr& cluster)
-    : pg_cluster_(std::move(cluster)){} 
-
+    UserRepository::UserRepository(const userver::components::ComponentContext& context)
+    : pg_cluster_ (
+            context.
+            FindComponent<userver::components::Postgres>("postgres-db-1")
+            .GetCluster()
+        ) {}
+        
     void UserRepository::Create(const UserDto &user) const{
         std::string password_hash = hasher_.Hash(user.password);
         const auto res = pg_cluster_->Execute(

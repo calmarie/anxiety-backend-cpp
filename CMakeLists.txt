@@ -5,10 +5,12 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(DownloadUserver)
 
 set(USERVER_FEATURE_POSTGRESQL ON CACHE BOOL "Provide asynchronous driver for PostgreSQL" FORCE)
+set(USERVER_FEATURE_REDIS ON CACHE BOOL "" FORCE)
 find_package(
     userver
-    COMPONENTS core #
+    COMPONENTS core #cmake --build .
                postgresql
+               redis
     QUIET
 )
 if(NOT userver_FOUND)
@@ -68,6 +70,7 @@ target_link_libraries(
     ${PROJECT_NAME}_objs
     PUBLIC userver::core
            userver::postgresql
+           userver::redis
            ${ARGON2_LIBRARY}
            jwt-cpp::jwt-cpp
            concurrentqueue::concurrentqueue

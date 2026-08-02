@@ -14,11 +14,7 @@ namespace anxiety_backend{
         const userver::components::ComponentConfig& config,
         const userver::components::ComponentContext& context
     ) : ComponentBase(config, context),
-        repo_ (
-            context.FindComponent<userver::components::Postgres>(
-                "postgres-db-1"
-            ).GetCluster()
-        )
+        repo_ (context)
     {}
 
 

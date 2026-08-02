@@ -23,6 +23,9 @@
 #include <handlers/auth/register.hpp>
 #include <handlers/auth/register.hpp>
 #include <handlers/auth/refresh.hpp>
+#include <userver/storages/redis/component.hpp>
+#include <userver/storages/secdist/component.hpp>
+#include <userver/storages/secdist/provider_component.hpp>
 
 int main(int argc, char* argv[]) {
     auto component_list =
@@ -45,7 +48,10 @@ int main(int argc, char* argv[]) {
             .Append<anxiety_backend::LogInUserHandler>()
             .Append<anxiety_backend::RegisterHandler>()
             .Append<anxiety_backend::RefreshTokensHandler>()
-        
+            .Append<userver::components::Secdist>()
+            .Append<userver::components::DefaultSecdistProvider>()
+            .Append<userver::components::Redis>("redis-db-1")
+       
         ;
 
     return userver::utils::DaemonMain(argc, argv, component_list);
