@@ -23,17 +23,20 @@ public:
 
     AuthTokens Register (const UserDto& user) const;
     AuthTokens Login (const UserDto& user) const;
-    AuthTokens Refresh (std::string_view token) const;
+    AuthTokens Refresh (std::string_view refresh_token) const;
+    void Logout (std::string_view refresh_token) const;
 
 private:
+
     AuthTokens CreateTokens (std::string_view uuid) const;
 
     UserRepository user_repo_;
     RefreshTokenRepository refresh_token_repo_;
     const JwtService& jwt_;
     RefreshTokenGenerator refresh_token_gen_;
-    
 
 };
+
+
 
 }

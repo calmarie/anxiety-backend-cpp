@@ -2,8 +2,6 @@
 #include <userver/storages/postgres/io/time_of_day.hpp>
 #include <chrono>
 
-#include "exceptions/redis_refresh_token_error.hpp"
-
 namespace anxiety_backend {
 
     RefreshTokenRepository::RefreshTokenRepository(
@@ -47,12 +45,15 @@ namespace anxiety_backend {
             redis_cc_
         ).Get();
 
-        if (!res){
-            throw (RedisRefreshTokenError());
-        }
-
         return (res);
         
     }
 
+    bool RefreshTokenRepository::RecallToken (std::string_view token_hash) const{
+        auto res = redis_client_->Del("refresh_token:"+std::string(token_hash),
+        redis_cc_
+        ).Get();
+
+        return res==1;
+    }
 }

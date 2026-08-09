@@ -5,6 +5,8 @@
 #include "exceptions/email_already_exists_error.hpp"
 #include "exceptions/email_is_required_error.hpp"
 #include "exceptions/incorrect_password_or_email_error.hpp"
+#include "exceptions/redis_refresh_token_error.hpp"
+#include "exceptions/refresh_token_is_required_error.hpp"
 
 #include "security/password_hasher.hpp"
 #include "security/refresh_token_gen.hpp"
@@ -79,10 +81,37 @@ namespace anxiety_backend {
         auto refresh_token_hash = refresh_token_gen_.
         HashRefreshToken(refresh_token);
 
+        if (refresh_token.empty()){
+            throw RefreshTokenIsRequiredError();
+        }
+
         auto user_id = refresh_token_repo_.
         VerifyToken(refresh_token_hash);
-       
+
+        if (!user_id.has_value()){
+            throw RedisRefreshTokenError();
+        }
+
+        refresh_token_repo_.RecallToken(refresh_token_hash);  
+
         return CreateTokens(*user_id);
 
+    }
+
+    void AuthService::Logout (std::string_view refresh_token) const{
+
+        if (refresh_token.empty()){
+            throw RefreshTokenIsRequiredError();
+        }
+
+        auto refresh_token_hash = refresh_token_gen_.
+        HashRefreshToken(refresh_token);
+
+        auto flag = refresh_token_repo_.RecallToken(refresh_token_hash);
+
+        if (!flag){
+            throw RedisRefreshTokenError();
+        }
+        
     }
 }

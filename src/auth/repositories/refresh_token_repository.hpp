@@ -13,6 +13,7 @@ namespace anxiety_backend {
         
         void SaveRefreshToken(std::string_view token_hash, std::string_view user_id) const;
         std::optional<std::string> VerifyToken(std::string_view token_hash) const;
+        bool RecallToken (std::string_view token_hash) const;
 
     private:    
         

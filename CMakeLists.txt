@@ -26,7 +26,7 @@ include_directories(src)
 add_library(
     ${PROJECT_NAME}_objs OBJECT
     src/health/bd_ping.cpp
-    
+
     src/user/handlers/get_user.cpp
     src/user/handlers/create_user.cpp
     src/user/handlers/delete_user.cpp
@@ -44,6 +44,7 @@ add_library(
     src/auth/handlers/login.cpp
     src/auth/handlers/register.cpp
     src/auth/handlers/refresh.cpp
+    src/auth/handlers/logout.cpp
     src/auth/service/auth_service.cpp
     src/auth/repositories/refresh_token_repository.cpp
 

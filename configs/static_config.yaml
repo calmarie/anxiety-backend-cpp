@@ -86,6 +86,11 @@ components_manager:
             method: POST
             task_processor: main-task-processor
         
+        handler-logout:
+            path: /auth/logout
+            method: POST
+            task_processor: main-task-processor
+        
         handler-register:
             path: /auth/register
             method: POST

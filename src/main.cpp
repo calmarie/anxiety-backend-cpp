@@ -25,6 +25,8 @@
 #include <auth/handlers/register.hpp>
 #include <auth/handlers/register.hpp>
 #include <auth/handlers/refresh.hpp>
+#include <auth/handlers/logout.hpp>
+
 
 int main(int argc, char* argv[]) {
     auto component_list =
@@ -44,7 +46,8 @@ int main(int argc, char* argv[]) {
             .Append<anxiety_backend::CreateUserHandler>()
             .Append<anxiety_backend::DeleteUserHandler>()
             .Append<anxiety_backend::UpdateUserNameHandler>()
-            .Append<anxiety_backend::LogInUserHandler>()
+            .Append<anxiety_backend::LoginHandler>()
+            .Append<anxiety_backend::LogoutHandler>()
             .Append<anxiety_backend::RegisterHandler>()
             .Append<anxiety_backend::RefreshTokensHandler>()
             .Append<userver::components::Secdist>()
