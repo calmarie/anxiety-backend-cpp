@@ -56,6 +56,7 @@ jobs:
                 ccache -M 2.0GB
                 ccache -s
 
-          - name: Run ${{matrix.make}}
-            run: |-
-                make ${{matrix.make}}
+          - name: Run ${{ matrix.make }}
+            env:
+                SECDIST_CONFIG: ${{ secrets.SECDIST_CONFIG }}
+            run: make ${{ matrix.make }}

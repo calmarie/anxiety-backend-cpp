@@ -70,6 +70,7 @@ format:
 $(addprefix docker-cmake-, $(PRESETS)) $(addprefix docker-build-, $(PRESETS)) $(addprefix docker-test-, $(PRESETS)) $(addprefix docker-clean-, $(PRESETS)): docker-%:
 	docker run $(DOCKER_ARGS) \
 		--network=host \
+		-e SECDIST_CONFIG \
 		-v $$PWD:$$PWD \
 		-w $$PWD \
 		$(DOCKER_IMAGE) \
