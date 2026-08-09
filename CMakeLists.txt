@@ -25,22 +25,27 @@ include_directories(src)
 
 add_library(
     ${PROJECT_NAME}_objs OBJECT
-    src/handlers/bd_ping.cpp
-    src/handlers/user_crud/get_user.cpp
-    src/handlers/user_crud/create_user.cpp
-    src/handlers/user_crud/delete_user.cpp
-    src/repositories/user_repository.cpp
-    src/handlers/user_crud/update_user_name.cpp
-    src/service/user_service.cpp
+    src/health/bd_ping.cpp
+    
+    src/user/handlers/get_user.cpp
+    src/user/handlers/create_user.cpp
+    src/user/handlers/delete_user.cpp
+    src/user/handlers/update_user_name.cpp
+    src/user/service/user_service.cpp
+    src/user/repositories/user_repository.cpp
+
     src/serializers/user_serializer.cpp
+
     src/security/password_hasher.cpp
-    src/handlers/auth/login.cpp
-    src/handlers/auth/register.cpp
-    src/handlers/auth/refresh.cpp
+
     src/security/jwt_service.cpp
-    src/service/auth_service.cpp
     src/security/refresh_token_gen.cpp
-    src/repositories/refresh_token_repository.cpp
+
+    src/auth/handlers/login.cpp
+    src/auth/handlers/register.cpp
+    src/auth/handlers/refresh.cpp
+    src/auth/service/auth_service.cpp
+    src/auth/repositories/refresh_token_repository.cpp
 
 )
 

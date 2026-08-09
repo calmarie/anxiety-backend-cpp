@@ -1,13 +1,14 @@
 #pragma once
 
-#include "repositories/user_repository.hpp"
+#include "user/repositories/user_repository.hpp"
+#include "auth/repositories/refresh_token_repository.hpp"
+
 #include "dto/user_dto.hpp"
 #include <userver/server/handlers/http_handler_base.hpp>
 #include <userver/storages/postgres/cluster.hpp>
 
 #include "dto/auth_dto.hpp"
 #include "security/refresh_token_gen.hpp"
-#include "repositories/refresh_token_repository.hpp"
 #include "security/jwt_service.hpp"
 namespace anxiety_backend {
 

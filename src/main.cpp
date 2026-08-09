@@ -8,24 +8,23 @@
 #include <userver/server/handlers/tests_control.hpp>
 #include <userver/testsuite/testsuite_support.hpp>
 
-
+#include <userver/storages/redis/component.hpp>
+#include <userver/storages/secdist/component.hpp>
+#include <userver/storages/secdist/provider_component.hpp>
 
 #include <userver/storages/postgres/component.hpp> 
 
 #include <userver/utils/daemon_run.hpp>
 
-#include <handlers/bd_ping.hpp>
-#include <handlers/user_crud/get_user.hpp>
-#include <handlers/user_crud/create_user.hpp>
-#include <handlers/user_crud/delete_user.hpp>
-#include <handlers/user_crud/update_user_name.hpp>
-#include <handlers/auth/login.hpp>
-#include <handlers/auth/register.hpp>
-#include <handlers/auth/register.hpp>
-#include <handlers/auth/refresh.hpp>
-#include <userver/storages/redis/component.hpp>
-#include <userver/storages/secdist/component.hpp>
-#include <userver/storages/secdist/provider_component.hpp>
+#include <health/bd_ping.hpp>
+#include <user/handlers/get_user.hpp>
+#include <user/handlers/create_user.hpp>
+#include <user/handlers/delete_user.hpp>
+#include <user/handlers/update_user_name.hpp>
+#include <auth/handlers/login.hpp>
+#include <auth/handlers/register.hpp>
+#include <auth/handlers/register.hpp>
+#include <auth/handlers/refresh.hpp>
 
 int main(int argc, char* argv[]) {
     auto component_list =

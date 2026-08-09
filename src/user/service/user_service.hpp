@@ -1,6 +1,6 @@
 #pragma once
 
-#include "repositories/user_repository.hpp"
+#include "user/repositories/user_repository.hpp"
 #include "models/user_model.hpp"
 #include "dto/user_dto.hpp"
 #include <userver/server/handlers/http_handler_base.hpp>

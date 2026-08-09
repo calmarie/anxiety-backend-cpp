@@ -1,6 +1,6 @@
 #pragma once
 
-#include "service/auth_service.hpp"
+#include "auth/service/auth_service.hpp"
 
 #include <userver/components/component.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
@@ -9,16 +9,17 @@
 
 namespace anxiety_backend {
 
-class RefreshTokensHandler : public userver::server::handlers::HttpHandlerBase {
+class LogInUserHandler : public userver::server::handlers::HttpHandlerBase {
     public:
-        static constexpr std::string_view kName = "handler-refresh-tokens";
+        static constexpr std::string_view kName = "handler-login";
 
-        RefreshTokensHandler(const userver::components::ComponentConfig&, const userver::components::ComponentContext&);
+        LogInUserHandler(const userver::components::ComponentConfig&, const userver::components::ComponentContext&);
 
         std::string HandleRequestThrow(const userver::server::http::HttpRequest&, userver::server::request::RequestContext&)
             const override;
             
     private:
+        UserDto Deserialize (std::string body) const;
         const AuthService& auth_service_;
         
 };
