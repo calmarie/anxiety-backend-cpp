@@ -6,4 +6,4 @@ is-testing: false
 
 server-port: 8080
 
-secdist-path: ./secdist.json
+secdist-path: ./secdist.docker.json

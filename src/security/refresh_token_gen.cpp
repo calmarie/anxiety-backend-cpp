@@ -1,6 +1,10 @@
 #include "refresh_token_gen.hpp"
 #include <openssl/rand.h>
 #include <openssl/sha.h> 
+
+#include <sstream>
+#include <iomanip>
+
 namespace anxiety_backend {
 
     std::string RefreshTokenGenerator::GenerateRefreshToken () const{

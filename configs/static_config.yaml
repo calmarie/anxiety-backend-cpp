@@ -115,7 +115,7 @@ components_manager:
             connlimit_mode: manual
         
         default-secdist-provider:
-            config: ./configs/secdist.json
+            config: $secdist-path
             missing-ok: true
             environment-secrets-key: SECDIST_CONFIG
 
