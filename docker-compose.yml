@@ -10,11 +10,13 @@ services:
         condition: service_healthy
     environment:
       JWT_SECRET: ${JWT_SECRET}
-      DB_CONNECTION: ${DB_CONNECTION}
+      DB_CONNECTION: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
     ports:
       - "8080:8080"
     volumes:
     - ./secdist.docker.json:/app/secdist.docker.json:ro
+
+
   postgres:
     image: postgres:18
     environment:
@@ -27,7 +29,9 @@ services:
       timeout: 5s
       retries: 5
     volumes:
+    - ./postgresql/migrations/001_create_users.sql:/docker-entrypoint-initdb.d/init.sql
     - pg-data:/var/lib/postgresql
+  
 
   redis:
     image: redis:8.10

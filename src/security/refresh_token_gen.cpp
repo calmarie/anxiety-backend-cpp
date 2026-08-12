@@ -23,6 +23,8 @@ namespace anxiety_backend {
         }
 
         return ss.str();
+
+        
     }
     std::string RefreshTokenGenerator::HashRefreshToken (std::string_view token) const{
         
